@@ -1,0 +1,51 @@
+function pac_plot_fun(pacmat, ph_freq_vec, amp_freq_vec, measure,...
+    structure1, structure2, dataset, ch)
+% function pac_plot_fun(pacmat, ph_freq_vec, amp_freq_vec, measure,...
+%   structure1, structure2, dataset)
+%
+% This function plots a PACgram.
+%
+% INPUTS:
+%
+% pacmat - matrix of PAC values to be plotted
+% ph_freq_vec - vector of centre frequency values which the lower,
+% modulating signal has been filtered at
+% amp_freq_vec - vector of centre frequency values which the higher,
+% modulated signal has been filtered at
+% measure - PAC measure which has been calculated to generate pacmat,
+% either 'esc', 'mi' or 'cfc'
+% structure1 - (string) name of the brain structure recorded from to obtain
+% the PAC containing signal 'sig1', displayed on y-axis
+% structure2 - (string) name of the brain structure recorded from to obtain
+% the modulating signal 'sig2', displayed on x-axis
+% dataset - (string) name of the dataset used to reference 'sig1' and
+%
+% Author: Angela Onslow, 2010
+
+figure
+
+mask = ones(size(pacmat);
+mask(mask == 0) = 0;
+
+imagesc(ph_freq_vec, amp_freq_vec, pacmat, 'alphadata', mask)
+
+axis xy
+ylabel('Amplitude frequency (Hz)', 'FontSize', 11)
+xlabel('Phase frequency (Hz)', 'FontSize', 11)
+
+c = colorbar;
+c_label = [upper(measure) ' value'];
+ylabel(c, c_label, 'FontSize', 11);
+
+% YH: saving PACgram
+save_path = fullfile('figures', dataset, 'PAC');
+if ~isfolder(save_path)
+    mkdir(save_path);
+end
+file_name = strcat('pac_', measure, string(ch));
+saveas(gcf, fullfile(save_path, sprintf('%s.svg', file_name)));
+% close(gcf);
+
+% BD: also save all parameters
+% file_name = strcat('out_', file_name); 
+% save([save_path filesep 'out_' ]);

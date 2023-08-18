@@ -1,0 +1,5 @@
+module load  MATLAB/R2019b
+mcc -v \
+    -R -nojvm \
+    -R -singleCompThread \
+    -m  WCoptim.m getCost.m isPSDok.m

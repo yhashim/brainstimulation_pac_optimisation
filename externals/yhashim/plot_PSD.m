@@ -1,0 +1,45 @@
+%% Plot power spectral density, Author: YH
+
+% Inputs: t – time (s), x - channel data at selected channel (uV), fs - sampling rate (Hz), name - extracted from path (string)
+% Outputs: psd - power spectrum density
+function plot_PSD(x, fs, ch_i, name)
+disp('plot_PSD')
+
+figure;
+% Increase number windows, 16
+n_seg = 16*4;
+window = (length(x)/n_seg)*1.5;
+[pxx,f] = pwelch(x, window, [], [], fs);
+
+% plot(f, pxx, 'Color', color); % Set the color
+plot(f,pxx);
+% xlim([0 10]);
+xlim([0 100]); 
+% xlim([0 300]);
+set(gca, 'Yscale', 'log');
+
+% title('PSD, Channel Average');
+% title(sprintf('PSD, Channel %d', ch_i));
+% subtitle(name);
+
+xlabel('Frequency (Hz)', 'FontSize', 12);
+ylabel('Power', 'FontSize', 12);
+
+% xticks([0:5:10]);
+xticks([0:10:100]);
+% xticks([0:30:300]);
+
+% % Save the figure
+% disp(name)
+% save_path = fullfile('figures', name, 'PSD');
+% if ~isfolder(save_path)
+%     mkdir(save_path);
+% end
+% save(fullfile(save_path, sprintf('psd%d_variables.mat', ch_i)), 'f', 'pxx');
+% saveas(gcf, fullfile(save_path, sprintf('%s.svg', 'psd'+string(ch_i))));
+% 
+% file_name = ['out_' char(datetime('now', 'Format', 'yyyyMMdd_HHmmss'))];
+% save([save_path filesep file_name]);
+% 
+% %close(gcf);
+end
